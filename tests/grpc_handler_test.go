@@ -58,7 +58,7 @@ func TestAddTodo(t *testing.T) {
 	res, err := handler.AddTodo(context.Background(), req)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "Todo added successfully", res.Message)
+	assert.Equal(t, int32(200), res.Message)
 	assert.Equal(t, "Test Todo", repo.todos["1"].Title)
 }
 
@@ -90,7 +90,7 @@ func TestMarkCompleted(t *testing.T) {
 	res, err := handler.MarkCompleted(context.Background(), req)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "Todo marked as completed", res.Message)
+	assert.Equal(t, int32(200), res.Message)
 	assert.True(t, repo.todos["1"].Completed)
 }
 
@@ -101,11 +101,11 @@ func TestDeleteTodo_Success(t *testing.T) {
 	service := application.NewTodoService(repo)
 	handler := grpc.NewGRPCTodoHandler(service)
 
-	req := &proto.TodoRequest{Id: "1"}
+	req := &proto.TodoDeleteRequest{Id: "1"}
 	res, err := handler.DeleteTodo(context.Background(), req)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "Todo deleted successfully", res.Message)
+	assert.Equal(t, int32(200), res.Message)
 	assert.NotContains(t, repo.todos, "1")
 }
 
@@ -115,7 +115,7 @@ func TestDeleteTodo_NotFound(t *testing.T) {
 	service := application.NewTodoService(repo)
 	handler := grpc.NewGRPCTodoHandler(service)
 
-	req := &proto.TodoRequest{Id: "non-existent-id"}
+	req := &proto.TodoDeleteRequest{Id: "non-existent-id"}
 	_, err := handler.DeleteTodo(context.Background(), req)
 
 	assert.Error(t, err)

@@ -12,8 +12,8 @@ type GRPCTodoHandler struct {
 	proto.UnimplementedTodoServiceServer
 }
 
-func NewGRPCTodoHandler(service domain.TodoService) GRPCTodoHandler {
-	return GRPCTodoHandler{service: service}
+func NewGRPCTodoHandler(service domain.TodoService) *GRPCTodoHandler {
+	return &GRPCTodoHandler{service: service}
 }
 
 func (h *GRPCTodoHandler) AddTodo(ctx context.Context, req *proto.TodoItem) (*proto.TodoResponse, error) {
@@ -22,7 +22,7 @@ func (h *GRPCTodoHandler) AddTodo(ctx context.Context, req *proto.TodoItem) (*pr
 	if err != nil {
 		return nil, err
 	}
-	return &proto.TodoResponse{Message: "Todo added successfully"}, nil
+	return &proto.TodoResponse{Message: 200}, nil
 }
 
 func (h *GRPCTodoHandler) ListTodos(ctx context.Context, req *proto.Empty) (*proto.TodoList, error) {
@@ -44,13 +44,13 @@ func (h *GRPCTodoHandler) MarkCompleted(ctx context.Context, req *proto.TodoRequ
 	if err != nil {
 		return nil, err
 	}
-	return &proto.TodoResponse{Message: "Todo marked as completed"}, nil
+	return &proto.TodoResponse{Message: 200}, nil
 }
 
-func (h *GRPCTodoHandler) DeleteTodo(ctx context.Context, req *proto.TodoRequest) (*proto.TodoResponse, error) {
+func (h *GRPCTodoHandler) DeleteTodo(ctx context.Context, req *proto.TodoDeleteRequest) (*proto.TodoResponse, error) {
 	err := h.service.DeleteTodo(req.Id)
 	if err != nil {
 		return nil, err
 	}
-	return &proto.TodoResponse{Message: "Todo deleted successfully"}, nil
+	return &proto.TodoResponse{Message: 200}, nil
 }

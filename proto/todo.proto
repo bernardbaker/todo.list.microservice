@@ -8,7 +8,7 @@ service TodoService {
     rpc AddTodo (TodoItem) returns (TodoResponse);
     rpc ListTodos (Empty) returns (TodoList);
     rpc MarkCompleted (TodoRequest) returns (TodoResponse);
-    rpc DeleteTodo (TodoRequest) returns (TodoResponse);
+    rpc DeleteTodo (TodoDeleteRequest) returns (TodoResponse);
 }
 
 message TodoItem {
@@ -19,10 +19,15 @@ message TodoItem {
 
 message TodoRequest {
     string id = 1;
+    bool completed = 2;
+}
+
+message TodoDeleteRequest {
+    string id = 1;
 }
 
 message TodoResponse {
-    string message = 1;
+    int32 message = 1;
 }
 
 message TodoList {
