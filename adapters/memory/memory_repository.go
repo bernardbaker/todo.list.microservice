@@ -29,7 +29,7 @@ func (r *InMemoryTodoRepository) ListTodos() ([]*domain.TodoItem, error) {
 
 func (r *InMemoryTodoRepository) MarkCompleted(id string) error {
 	if item, exists := r.todos[id]; exists {
-		item.Completed = true
+		item.Completed = !item.Completed
 		return nil
 	}
 	return errors.New("todo not found")
